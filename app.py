@@ -1,8 +1,16 @@
-from flask import Flask
+from flask import Flask, request
+
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
-    return "Hello World"
+@app.route('/data-example', methods=['GET', 'POST'])
+def handle_request():
+    name = request.args.get('name', 'Guest')
 
-app.run(host="0.0.0.0", port=5000)
+    if request.method == 'POST':
+        form_data = request.form.get('username')
+        return f"Form submitted for: {form_data}"
+
+    return f"Hello, {name}! Send a POST request with JSON or Form data."
+
+if __name__ == '__main__':
+    app.run(debug=True)
